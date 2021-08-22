@@ -1,4 +1,3 @@
-from ntrreader.tppflush import HIDButtons
 import socket
 from enum import Enum
 from array import array
@@ -92,19 +91,12 @@ class PyNTRReader:
     def start_connection(self):
         if self.input:
             self.input_socket = LumaInputServer(self.host)
-            self.input_socket.clear_everything()
         self.socket = socket.create_connection((self.host, 8000))
         self.send_heartbeat_packet()
         packet = self.read_packet()
         
 
     # Sending packets
-
-    def press(self, button):
-        self.input_socket.press(button)
-        self.input_socket.send(False)
-        self.input_socket.unpress(button)
-        self.input_socket.send(False)
 
     def send_heartbeat_packet(self):
         # print("Sending Heartbeat Packet")

@@ -1,2 +1,2 @@
-from .tppflush import LumaInputServer,HIDButtons,CPAD_Commands,CSTICK_Commands,N3DS_Buttons,Special_Buttons
+from .LumaInputServer import LumaInputServer
 from .PyNTRReader import PyNTRReader,G6Reader,G2Reader
