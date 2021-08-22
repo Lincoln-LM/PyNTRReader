@@ -295,6 +295,9 @@ class G6Reader(PyNTRReader):
 
     def readRadar(self):
         return self.read(self.getWildOffset() - 0x198, self.PK6PARTYSIZE)
+    
+    def readFish(self):
+        return self.read(self.getWildOffset() + 0xaa8, self.PK6PARTYSIZE)
 
     def readHordeSlot(self, slot):
         return self.read(self.getWildOffset() + (slot * 0x1e4), self.PK6PARTYSIZE)
