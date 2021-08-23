@@ -48,3 +48,6 @@ class TinyMT:
         for i in range(3,-1,-1):
             display.append(f"[{i}] {self.state[i]:08X}")
         return display
+
+    def randBool(self):
+        return self.next() < 0x80000000

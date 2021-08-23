@@ -31,3 +31,6 @@ class RNGList:
     
     def rand(self,n):
         return ((self.getValue() * n) >> 32) & 0xFFFFFFFF
+        
+    def randBool(self):
+        return self.getValue() < 0x80000000
