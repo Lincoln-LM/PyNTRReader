@@ -8,18 +8,18 @@ class RNGList:
         for i in range(self.size):
             self.states.append(self.rng.next())
     
-    def advanceStates(self,frames):
-        for frame in range(frames):
-            self.advanceState()
+    def advanceFrames(self,advances):
+        for _ in range(advances):
+            self.advanceFrame()
 
-    def advanceState(self):
+    def advanceFrame(self):
         self.head &= self.size - 1
         self.states[self.head] = self.rng.next()
         self.head += 1
         self.pointer = self.head
     
-    def advanceFrames(self,frames):
-        self.pointer = (self.pointer + frames) & (self.size - 1)
+    def advanceInFrame(self,advances):
+        self.pointer = (self.pointer + advances) & (self.size - 1)
     
     def getValue(self):
         self.pointer &= self.size - 1
@@ -31,6 +31,6 @@ class RNGList:
     
     def rand(self,n):
         return ((self.getValue() * n) >> 32) & 0xFFFFFFFF
-        
+
     def randBool(self):
         return self.getValue() < 0x80000000

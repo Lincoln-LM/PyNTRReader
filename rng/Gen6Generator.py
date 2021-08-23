@@ -23,7 +23,7 @@ class Gen6Generator(Generator):
         self.advance(delay+1,False)
     def generate(self):
         if self.sync == CAN_SYNC or self.method > STATIONARY:
-            self.pool.advanceFrames(60)
+            self.pool.advanceInFrame(60)
         if self.method == HORDE:
             result = []
             for slot in range(5):
@@ -83,7 +83,7 @@ class Gen6Generator(Generator):
             gender = self.gender
         return [EC, PID, PSV, shiny, IVs, ability, nature, gender]
     def skip(self):
-        self.pool.advanceState()
+        self.pool.advanceFrame()
         self.frame += 1
     def advance(self,advances):
         for _ in range(advances):

@@ -27,7 +27,7 @@ class RadarTinyMTGenerator(Generator):
         self.search_for_shiny = search_for_shiny
     def generate(self):
         status = self.state_count.display_state()
-        self.pool.advanceFrames(3*self.party_count)
+        self.pool.advanceInFrame(3*self.party_count)
         music_val = self.pool.rand(100)
         boost = self.boost
         boost &= 1 if music_val >= 50 else 0
@@ -89,7 +89,7 @@ class RadarTinyMTGenerator(Generator):
     def display_patches(patches):
         return "\n".join(" ".join(patches[x]) for x in range(9))
     def skip(self):
-        self.pool.advanceState()
+        self.pool.advanceFrame()
         self.state_count.next()
         self.index += 1
     def advance(self,advances):
