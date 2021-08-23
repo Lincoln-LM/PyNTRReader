@@ -241,6 +241,7 @@ class G6Reader(PyNTRReader):
             self.mtStart = 0x8c5284C
             self.mtIndex = 0x8c52848
             self.boxAddress = 0x8c861c8
+            self.tradeAddress = 0x8500000
 
             self.tinyStart = 0x8c52808
 
@@ -260,6 +261,7 @@ class G6Reader(PyNTRReader):
             self.mtStart = 0x8c59e48
             self.mtIndex = 0x8c59e44
             self.boxAddress = 0x8c9e134
+            self.tradeAddress = 0x8520000
 
             self.tinyStart = 0x8C59E04
 
@@ -309,6 +311,9 @@ class G6Reader(PyNTRReader):
 
     def readWild(self):
         return self.read(self.getWildOffset(), self.PK6PARTYSIZE)
+
+    def readTrade(self):
+        return self.read(self.tradeAddress, self.PK6PARTYSIZE)
 
     def readBox(self,box,index):
         return self.read(self.boxAddress + (box*30 + index) * self.PK6STOREDSIZE, self.PK6STOREDSIZE)
