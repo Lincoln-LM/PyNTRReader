@@ -236,6 +236,7 @@ class G6Reader(PyNTRReader):
 
             self.initialSeed = None
             self.seedAddress = 0x8c52844
+            self.idAddress = 0x8c79c3c
             self.mtStart = 0x8c5284C
             self.mtIndex = 0x8c52848
 
@@ -252,6 +253,7 @@ class G6Reader(PyNTRReader):
 
             self.initialSeed = None
             self.seedAddress = 0x8c59e40
+            self.idAddress = 0x8c81340
             self.mtStart = 0x8c59e48
             self.mtIndex = 0x8c59e44
 
@@ -267,6 +269,13 @@ class G6Reader(PyNTRReader):
             self.saveVariable = 0x8C71DB8
         elif self.Transporter:
             self.transporterAddress = 0x8BC6524
+        self.IDs = self.readIDs()
+        self.TSV = self.IDs[0] ^ self.IDs[1]
+        print(f"Game: {'XY' if self.XY else 'ORAS'} TID: {self.IDs[0]} TSV: {self.TSV >> 4} TRV: {self.TSV%16} FULL TSV: {self.TSV}\n")
+    
+    def readIDs(self):
+        ids = self.readU32(self.idAddress)
+        return ids >> 16, ids & 0xFFFF
 
     def getWildOffset(self):
         if self.game == 0:

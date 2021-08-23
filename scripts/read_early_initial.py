@@ -16,7 +16,7 @@ client = G6Reader(IP_ADDR)
 last_index = 624
 while True:
     # Read the current MT index
-    index = client.readU32(client.mtIndex)A
+    index = client.readU32(client.mtIndex)
     # Check if the current index is less than the last index 
     # If it is then the script is either just starting, the index passed 624, or a new initial seed has been generated
     if index < last_index:

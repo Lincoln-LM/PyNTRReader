@@ -28,3 +28,6 @@ class RNGList:
     
     def resetState(self):
         self.pointer = self.head
+    
+    def rand(self,n):
+        return ((self.getValue() * n) >> 32) & 0xFFFFFFFF
