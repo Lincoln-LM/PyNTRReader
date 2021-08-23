@@ -82,10 +82,9 @@ class Gen6Generator(Generator):
         else:
             gender = self.gender
         return [EC, PID, PSV, shiny, IVs, ability, nature, gender]
-    def skip(self,add_frame=True):
+    def skip(self):
         self.pool.advanceState()
-        if add_frame:
-            self.frame += 1
-    def advance(self,advances,add_frame=True):
+        self.frame += 1
+    def advance(self,advances):
         for _ in range(advances):
-            self.skip(add_frame=True)
+            self.skip()
