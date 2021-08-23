@@ -78,7 +78,7 @@ class Application(tk.Frame):
             if pk6.isValid:
                 info = str(pk6)
                 s1 = pb.SpriteResource('pokemon', pk6.species, shiny=pk6.shinyType).img_data
-                im = Image.open(io.BytesIO(s1))
+                im = Image.open(io.BytesIO(s1)).convert('RGBA')
                 image = ImageTk.PhotoImage(im)
                 self.images[i] = image
                 self.image_displays[i].config(image=image)
