@@ -323,7 +323,7 @@ class G6Reader(PyNTRReader):
         return self.read(self.getWildOffset() + (slot * 0x1e4), self.PK6PARTYSIZE)
     
     def readHorde(self):
-        return [self.readHordeSlot(0), self.readHordeSlot(1), self.readHordeSlot(2), self.readHordeSlot(3), self.readHordeSlot(4)]
+        return [self.readHordeSlot(x) for x in range(5)]
 
     def readEgg(self, daycare=0):
         if daycare == 1 and self.game == 1:
