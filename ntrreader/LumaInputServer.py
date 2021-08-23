@@ -1,3 +1,4 @@
+import builtins
 import socket
 from time import sleep
 class LumaInputServer():
@@ -6,6 +7,18 @@ class LumaInputServer():
         port = 4950
         self.socket.connect((server, port))
         self.empty = [0xFF, 0x0F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x08, 0x80, 0x00]
+        	# A
+	        # B
+	        # SELECT
+	        # START
+	        # DPADRIGHT
+	        # DPADLEFT
+	        # DPADUP
+	        # DPADDOWN
+	        # R
+	        # L
+	        # X
+	        # Y
         self.buttons = {
                         "NONE":0xFF,
                         "A":0xFE,

@@ -15,11 +15,11 @@ tiny_seeds = []
 initial_seeds = []
 ind = 0
 for index in range(4):
-    initial_seeds.append(reader.readU32(0x08c52808+(index*4)))
+    initial_seeds.append(reader.readU32(reader.tinyStart+(index*4)))
 go = TinyMT(state=initial_seeds)
 while True:
     for index in range(4):
-        tiny_seeds.append(reader.readU32(0x08c52808+(index*4)))
+        tiny_seeds.append(reader.readU32(reader.tinyStart+(index*4)))
     if tiny_seeds != last_tiny_seeds:
         b = False
         pre = ind
