@@ -1,12 +1,6 @@
-from rng import Generator, MT, RNGList
+from rng import Generator, Frame, MT, RNGList
 
 class StationaryGenerator(Generator):
-    NATURES = ["Hardy", "Lonely", "Brave", "Adamant", "Naughty",
-               "Bold", "Docile", "Relaxed", "Impish", "Lax",
-               "Timid", "Hasty", "Serious", "Jolly", "Naive",
-               "Modest", "Mild", "Quiet", "Bashful", "Rash",
-               "Calm", "Gentle", "Sassy", "Careful", "Quirky" 
-                              "Synchronize"]
     CAN_SYNC = 0
     CAN_NOT_SYNC = 1
     ALWAYS_SYNC = 2
@@ -45,7 +39,7 @@ class StationaryGenerator(Generator):
         self.pool.advanceState()
         self.frame = -1
     def generate(self):
-        if self.sync != self.ALWAYS_SYNC:
+        if self.sync == self.CAN_SYNC:
             self.pool.advanceFrames(60)
         shiny = self.NON_SHINY
         EC = self.pool.getValue()
@@ -95,18 +89,10 @@ class StationaryGenerator(Generator):
             gender = self.gender
         self.pool.advanceState()
         self.frame += 1
-        return [self.frame, EC, PID, PSV, shiny, IVs, ability, nature, gender]
+        return Frame([self.frame, EC, PID, PSV, shiny, IVs, ability, nature, gender])
     def skip(self):
         self.pool.advanceState()
         self.frame += 1
     def advance(self,advances):
         for _ in range(advances):
             self.skip()
-    def header(self):
-        return "Frame EC PID PSV Shiny IVs Ability Nature Gender"
-    def format(self,frame):
-        return f"{frame[0]} {frame[1]:08X} {frame[2]:08X} {frame[3]:05d} {'Square' if frame[4] == self.SQUARE else 'Star' if frame[4] == self.STAR else 'Not Shiny'} {'/'.join(str(iv) for iv in frame[5])}, {frame[6]}, {self.NATURES[frame[7]]}, {frame[8]}"
-
-        
-
-
