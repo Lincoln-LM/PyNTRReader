@@ -7,22 +7,20 @@ class LumaInputServer():
         port = 4950
         self.socket.connect((server, port))
         self.empty = [0xFF, 0x0F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x08, 0x80, 0x00]
-        	# A
-	        # B
-	        # SELECT
-	        # START
-	        # DPADRIGHT
-	        # DPADLEFT
-	        # DPADUP
-	        # DPADDOWN
-	        # R
-	        # L
-	        # X
-	        # Y
         self.buttons = {
-                        "NONE":0xFF,
-                        "A":0xFE,
-                        "B":0xFD,
+                        "NONE":  0xFF,
+                        "A":     0xFF^(1<<0),
+                        "B":     0xFF^(1<<1),
+                        "SELECT":0xFF^(1<<2),
+                        "START": 0xFF^(1<<3),
+                        "RIGHT": 0xFF^(1<<4),
+                        "LEFT":  0xFF^(1<<5),
+                        "UP":    0xFF^(1<<6),
+                        "DOWN":  0xFF^(1<<7),
+                        "R":     0xFF^(1<<8),
+                        "L":     0xFF^(1<<9),
+                        "X":     0xFF^(1<<10),
+                        "Y":     0xFF^(1<<11),
                         }
 
     def send(self, button="None"):
