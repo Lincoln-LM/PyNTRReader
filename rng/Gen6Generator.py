@@ -1,66 +1,58 @@
 from rng import Generator, Frame, MT, RNGList
+from pokeconstants import *
 
-class StationaryGenerator(Generator):
-    CAN_SYNC = 0
-    CAN_NOT_SYNC = 1
-    ALWAYS_SYNC = 2
-
-    CAN_BE_SHINY = 0
-    SHINY_LOCKED = 1
-    FORCED_SHINY = 2
-
-    ABILITY_NA = 0
-    ABILITY_1 = 1
-    ABILITY_2 = 2
-    ABILITY_HA = 3
-
-    GENDER_NA = 0
-    GENDER_MALE = 1
-    GENDER_FEMALE = 2
-    GENDER_NONE = 3
-
-    NON_SHINY = 0
-    STAR = 1
-    SQUARE = 2
-    def __init__(self,seed,tsv,charm,sync,ivs,shiny,ability, gender):
+class Gen6Generator(Generator):
+    
+    def __init__(self,seed,tsv,charm,method,delay,sync,ivs,shiny,ability,gender):
         rng = MT(seed)
         pool = RNGList(rng,128)
         super().__init__(rng, pool)
+        self.method = method
+        self.delay = delay
         self.tsv = tsv
         self.sync = sync
         self.ivs = ivs
         self.shiny = shiny
         self.ability = ability
         self.gender = gender
-        if self.shiny != self.SHINY_LOCKED and self.sync != self.ALWAYS_SYNC and charm:
+        if self.shiny != SHINY_LOCKED and self.sync != ALWAYS_SYNC and charm:
             self.rerolls = 3
         else:
             self.rerolls = 1
-        self.pool.advanceState()
         self.frame = -1
+        self.advance(delay+1,False)
     def generate(self):
-        if self.sync == self.CAN_SYNC:
+        if self.sync == CAN_SYNC or self.method > STATIONARY:
             self.pool.advanceFrames(60)
-        shiny = self.NON_SHINY
+        if self.method == HORDE:
+            result = []
+            for slot in range(5):
+                result.append(Frame(self.method,[self.frame, slot + 1] + self.generate_once()))
+        else:
+            result = Frame(self.method,[self.frame] + self.generate_once())
+        self.skip()
+        return result
+    def generate_once(self):
+        shiny = NON_SHINY
         EC = self.pool.getValue()
         for i in range(self.rerolls):
             PID = self.pool.getValue()
             PSV = ((PID >> 16) ^ (PID & 0xFFFF))
             XOR = self.tsv ^ PSV
             if XOR < 8:
-                if self.shiny == self.SHINY_LOCKED:
+                if self.shiny == SHINY_LOCKED:
                     PID ^= 0x10000000
                     PSV = ((PID >> 16) ^ (PID & 0xFFFF))
-                    shiny = self.NON_SHINY
+                    shiny = NON_SHINY
                 else:
-                    shiny = self.STAR
+                    shiny = STAR
                     if XOR == 0:
-                        shiny = self.SQUARE
+                        shiny = SQUARE
                 break
-            elif self.shiny == self.FORCED_SHINY:
+            elif self.shiny == FORCED_SHINY:
                 PID = (((((self.tsv << 4) + self.trv) ^ (PID & 0xFFFF)) << 16) + (PID & 0xFFFF)) & 0xFFFFFFFF
                 PSV = ((PID >> 16) ^ (PID & 0xFFFF))
-                shiny = self.SQUARE
+                shiny = SQUARE
         
         IVs = [-1]*6
         i = self.ivs
@@ -73,26 +65,27 @@ class StationaryGenerator(Generator):
             if IVs[i] < 0:
                 IVs[i] = self.pool.getValue() >> 27
         
-        if self.ability == self.ABILITY_NA:
+        if self.ability == ABILITY_12:
             ability = (self.pool.getValue() >> 31) + 1
+        elif self.ability == ABILITY_12H:
+            ability = self.pool.rand(3) + 1
         else:
             ability = self.ability
         
-        if self.sync == self.ALWAYS_SYNC:
+        if self.sync == ALWAYS_SYNC:
             nature = 25
         else:
             nature = self.pool.rand(25)
         
-        if self.gender == self.GENDER_NA:
+        if self.gender == GENDER_MF:
             gender = self.pool.rand(252)
         else:
             gender = self.gender
+        return [EC, PID, PSV, shiny, IVs, ability, nature, gender]
+    def skip(self,add_frame=True):
         self.pool.advanceState()
-        self.frame += 1
-        return Frame([self.frame, EC, PID, PSV, shiny, IVs, ability, nature, gender])
-    def skip(self):
-        self.pool.advanceState()
-        self.frame += 1
-    def advance(self,advances):
+        if add_frame:
+            self.frame += 1
+    def advance(self,advances,add_frame=True):
         for _ in range(advances):
-            self.skip()
+            self.skip(add_frame=True)
