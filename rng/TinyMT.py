@@ -47,6 +47,6 @@ class TinyMT:
         display = []
         i = 0
         for n in self.state:
-            display.append("["+str(i)+"] "+hex(n)[2:].zfill(8))
+            display.append(f"[{i}] {n:08X}")
             i += 1
         return display
