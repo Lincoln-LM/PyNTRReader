@@ -45,8 +45,6 @@ class TinyMT:
     
     def display_state(self):
         display = []
-        i = 0
-        for n in self.state:
-            display.append(f"[{i}] {n:08X}")
-            i += 1
+        for i in range(3,-1,-1):
+            display.append(f"[{i}] {self.state[i]:08X}")
         return display
