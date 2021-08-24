@@ -6,9 +6,13 @@
 ## Features
  * Read Wild Pokémon info in Gen 6
  * Read Radar Pokémon info in Gen 6
+ * Read Fishing Pokémon info in Gen 6
+ * Read Horde Pokémon info in Gen 6
+ * Read Box Pokémon info in Gen 6
  * Read Egg Seeds in Gen 6
  * Read TinyMT Seeds and track index in Gen 6
  * Read TinyMT Seeds and Initial Seed with breakpoints in Gen 6 (iffy)
+ * Calculate Initial Seed when under frame 624
  * Read Transporter Pokémon info
  * Read Wild Pokémon info in GS
  * Read Wild Pokémon info in GS
