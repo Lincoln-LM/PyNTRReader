@@ -217,13 +217,31 @@ class G2Reader(PyNTRReader):
     def __init__(self, ip, input=False, debug=False):
         PyNTRReader.__init__(self, ip, input=input, debug=debug)
         self.baseAddress = 0x8A2406C
+        self.FXXXAddress = 0x8A2C23C
     
     def readGB(self,address,length):
-        return self.read(self.baseAddress + address, length)
+        return self.read(self.baseAddress + address if address < 0xFF00 else self.FXXXAddress + address, length)
+        
+    def readU8GB(self,address):
+        return int.from_bytes(self.readGB(address,1), byteorder='little', signed=False)
+
+    def readU16GB(self,address):
+        return int.from_bytes(self.readGB(address,2), byteorder='little', signed=False)
+
+    def readU32GB(self,address):
+        return int.from_bytes(self.readGB(address,4), byteorder='little', signed=False)
 
     def readWild(self):
         return self.readGB(0xCC13,0x4FF)
-        
+    
+    def readDIV(self):
+        return self.readU8GB(0xFF04)
+    
+    def readRNG(self):
+        return self.readU16GB(0xFFE3)
+    
+    def readStarter(self):
+        return self.readU16GB(0xDA3F)
 
 class G6Reader(PyNTRReader):
     PK6STOREDSIZE = 0xE8
