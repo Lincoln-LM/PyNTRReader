@@ -19,8 +19,8 @@ class Gen6Generator(Generator):
             self.rerolls = 3
         else:
             self.rerolls = 1
-        self.frame = -1
-        self.advance(delay+1,False)
+        self.frame = -delay - 2 
+        self.advance(delay+1)
     def generate(self):
         if self.sync == CAN_SYNC or self.method > STATIONARY:
             self.pool.advanceInFrame(60)
