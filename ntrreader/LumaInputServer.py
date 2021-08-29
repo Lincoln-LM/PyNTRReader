@@ -34,7 +34,7 @@ class LumaInputServer():
         self.socket.send(data)
     
     def press(self,buttons,delay=0.3):
-        self.send(button=buttons)
+        self.send(buttons=buttons)
         sleep(delay)
         self.send()
     
