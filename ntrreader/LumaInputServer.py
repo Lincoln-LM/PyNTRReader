@@ -23,18 +23,20 @@ class LumaInputServer():
                         "Y":     0xFFF & ~(1<<11),
                         }
 
-    def send(self, button="None"):
+    def send(self, buttons=[]):
         data = self.empty.copy()
-        hidpad = self.buttons[button.upper()]
+        hidpad = 0xFFF
+        for button in buttons:
+            hidpad &= self.buttons[button.upper()]
         data[0] = hidpad & 0xFF
         data[1] = hidpad >> 8
         data = bytes(data)
         self.socket.send(data)
     
-    def press(self,button,delay=0.3):
-        self.send(button=button)
+    def press(self,buttons,delay=0.3):
+        self.send(button=buttons)
         sleep(delay)
-        self.send(button="None")
+        self.send()
     
     def touch(self, x, y,delay=0.3):
         data = self.empty.copy()
@@ -48,4 +50,4 @@ class LumaInputServer():
         data = bytes(data)
         self.socket.send(data)
         sleep(delay)
-        self.send(button="None")
+        self.send()

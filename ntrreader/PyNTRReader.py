@@ -38,11 +38,6 @@ class PyNTRReader:
                 break
         if self.debug:
             self.socket = socket.create_connection((self.host, 5000+self.pid))
-            self.send_heartbeat_packet()
-            self.bpdis(3)
-            self.bpdis(4)
-            self.resume()
-            self.bpena(3)
 
     def set_game_name(self, name):
         self.game_name = name
@@ -134,6 +129,18 @@ class PyNTRReader:
 
     def resume(self):
         self.send_packet(0,11,[0,0,4])
+    
+    def enableBP(self):
+        self.bpena(3)
+    
+    def disableBP(self):
+        self.bpdis(3)
+        self.bpdis(4)
+        self.resume()
+    
+    def setBreakPoint(self):
+        self.bpadd(self.bpOffset)
+        self.bpadd(self.tinyBpOffset)
 
     def send_write_memory_packet(self, addr, length, data):
         # print("Sending WMemory Packet")
@@ -269,6 +276,8 @@ class G6Reader(PyNTRReader):
             self.parent2Address = 0x8C8003C
 
             self.saveVariable = 0x8C6A6A4
+            self.bpOffset = 0x1254F8
+            self.tinyBpOffset = 0x174DB4
         elif self.ORAS:
             self.partyAddress = 0x8CFB26C
 
@@ -291,6 +300,8 @@ class G6Reader(PyNTRReader):
             self.parent2Address = 0x8C88270
 
             self.saveVariable = 0x8C71DB8
+            self.bpOffset = 0x125EC8
+            self.tinyBpOffset = 0x175CEC
         elif self.Transporter:
             self.transporterAddress = 0x8BC6524
         self.IDs = self.readIDs()
