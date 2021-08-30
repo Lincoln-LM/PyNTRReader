@@ -314,7 +314,7 @@ class G6Reader(PyNTRReader):
         return ids >> 16, ids & 0xFFFF    
 
     def readOT(self):
-        return self.read(self.nameAddress,0x1A).decode("utf-8")
+        return self.read(self.nameAddress,0x1A).decode("utf-8").replace("\x00", "")
 
     def getWildOffset(self):
         if self.game == 0:
