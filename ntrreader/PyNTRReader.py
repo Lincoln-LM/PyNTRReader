@@ -304,10 +304,11 @@ class G6Reader(PyNTRReader):
             self.tinyBpOffset = 0x175CEC
         elif self.Transporter:
             self.transporterAddress = 0x8BC6524
-        self.IDs = self.readIDs()
-        self.TSV = self.IDs[0] ^ self.IDs[1]
-        self.OT = self.readOT()
-        print(f"Game: {'XY' if self.XY else 'ORAS'} Trainer Name: {self.OT} TID: {self.IDs[0]} TSV: {self.TSV >> 4} TRV: {self.TSV%16} FULL TSV: {self.TSV}\n")
+        if not self.Transporter:
+            self.IDs = self.readIDs()
+            self.TSV = self.IDs[0] ^ self.IDs[1]
+            self.OT = self.readOT()
+            print(f"Game: {'XY' if self.XY else 'ORAS'} Trainer Name: {self.OT} TID: {self.IDs[0]} TSV: {self.TSV >> 4} TRV: {self.TSV%16} FULL TSV: {self.TSV}\n")
     
     def readIDs(self):
         ids = self.readU32(self.idAddress)
