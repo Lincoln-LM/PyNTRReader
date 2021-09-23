@@ -283,7 +283,7 @@ class G6Reader(PyNTRReader):
 
             self.initialSeed = None
             self.seedAddress = 0x8c59e40
-            self.idAddress = 0x8C81388
+            self.idAddress = 0x8C81340
             self.nameAddress = 0x8c79c84
             self.mtStart = 0x8c59e48
             self.mtIndex = 0x8c59e44
